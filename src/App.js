@@ -1,24 +1,68 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Alert from "./components/Alert";
+import About from "./components/About";
+import Navbar from "./components/Navbar";
+import TextFrom from "./components/TextFrom";
+import { useState } from "react";
+
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
+  const [mode, setMode] = useState("light");
+  const [alert, setAlert] = useState();
+
+  const showAlert = (message, type) => {
+    setAlert({
+      msg: message,
+      type: type,
+    });
+    setTimeout(() => {
+      setAlert(null);
+    }, 1500);
+  };
+
+  const toggleMode = () => {
+    if (mode === "light") {
+      setMode("dark");
+      document.body.style.backgroundColor = "#14153d";
+      showAlert("Dark mode has been enabled", "success");
+      document.title = "Text Analyzer - Home (Dark Mode)";
+    } else {
+      setMode("light");
+      document.body.style.backgroundColor = "white";
+      showAlert("Light mode has been enabled", "success");
+      document.title = "Text Analyzer - Home ";
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Router>
+        <Navbar
+          title={"Text Analyzer"}
+          mode={mode}
+          toggleMode={toggleMode}
+          about="About"
+          home='Home'
+        />
+        <Alert alert={alert} />
+        <div className="container">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <TextFrom
+                  showalert={showAlert}
+                  mode={mode}
+                  heading="Enter the Text to analyze below"
+                />
+              }
+            />
+            <Route path="/about" element={<About mode={mode} />} />
+          </Routes>
+        </div>
+      </Router>
+    </>
   );
 }
 
