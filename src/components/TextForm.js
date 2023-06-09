@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function TextFrom(props) {
+export default function TextForm(props) {
   const [text, setText] = useState("");
 
   const handleUpClick = () => {
@@ -32,7 +32,7 @@ export default function TextFrom(props) {
     let des = text;
     let nText = text.split(/[ ]+/);
     setText(nText.join(" "));
-    text==='' ? props.showalert("Please write below ", "warning") : des.length < text.lenght-1 ? props.showalert("Removed Extra Spaces", "success") : props.showalert("There is not extra spaces", "info");
+    text==='' ? props.showalert("Please write below ", "warning") : text.length > des.length-1 ? props.showalert("Removed Extra Spaces", "success") : props.showalert("There is not extra spaces", "info");
   };
 
   const handelOnChanged = (e) => {
